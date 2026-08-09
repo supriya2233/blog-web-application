@@ -1,0 +1,22 @@
+{
+    "name": "blog-app",
+    "version": "1.0.0",
+    "description": "A simple blog web application built with Node.js, Express.js and EJS",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "node --watch app.js"
+    },
+    "keywords": [
+        "nodejs",
+        "express",
+        "ejs",
+        "blog"
+    ],
+    "author": "Supriya",
+    "license": "ISC",
+    "dependencies": {
+        "ejs": "^3.1.10",
+        "express": "^5.1.0"
+    }
+}
