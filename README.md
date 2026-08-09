@@ -37,8 +37,10 @@ The application follows a simple client-server architecture.
              In-Memory Post Array
 
 ## Installation
-Prerequisites:
-Make sure the following are installed: Node.js, npm, Git
+Prerequisites: Make sure the following are installed on your system:
+- [Node.js](https://nodejs.org/)
+- npm
+- Git
 
 1. Clone the Repository
 git clone https://github.com/supriya2233/blog-web-application.git
@@ -57,8 +59,9 @@ The application will run at:
 http://localhost:3000
 Open that address in your browser.
 
-Development Mode: T
-Run: npm run dev
+Development Mode: 
+Run: 
+npm run dev
 
 
 
