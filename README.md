@@ -37,32 +37,45 @@ The application follows a simple client-server architecture.
              In-Memory Post Array
 
 ## Installation
-Prerequisites: Make sure the following are installed on your system:
-- [Node.js](https://nodejs.org/)
+
+### Prerequisites
+Make sure the following are installed on your system:
+- Node.js
 - npm
 - Git
 
-1. Clone the Repository
+### 1. Clone the Repository
+```bash
 git clone https://github.com/supriya2233/blog-web-application.git
+```
 
-3. Navigate to the Project
+### 2. Navigate to the Project
+```bash
 cd blog-web-application
+```
 
-5. Install Dependencies
+### 3. Install Dependencies
+```bash
 npm install
-This installs the dependencies listed in package.json.
+```
+This installs the dependencies listed in `package.json`.
 
-4. Start the Application
+### 4. Start the Application
+```bash
 npm start
-
+```
 The application will run at:
+```text
 http://localhost:3000
-Open that address in your browser.
+```
+Open the address in your browser.
 
-Development Mode: 
-Run: 
+## Development Mode
+For development with automatic server restarting, run:
+```bash
 npm run dev
-
+```
+This uses Nodemon to automatically restart the Node.js server whenever changes are detected.
 
 
 
