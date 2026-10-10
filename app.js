@@ -598,17 +598,89 @@ app.use(
 app.use(express.static("public"));
 
 
-// ========================================
-// HOME PAGE
-// ========================================
+
+ // =========================
+ // HOME PAGE - SEARCH & FILTER
+ // =========================
+
 
 app.get("/", (req, res) => {
+    // Read search, category, and page number from the URL.
+    const search = (req.query.search || "").trim();
+    const category = (req.query.category || "").trim();
 
-    res.render("index", {
-        posts: posts
+    const requestedPage = Number.parseInt(req.query.page, 10);
+    const currentPage =
+        Number.isInteger(requestedPage) && requestedPage > 0
+            ? requestedPage
+            : 1;
+
+    // Number of posts to display on each page.
+    const postsPerPage = 4;
+
+    // Get unique categories from the current posts.
+    const categories = [
+        ...new Set(
+            posts
+                .map(post => post.category)
+                .filter(Boolean)
+        )
+    ].sort((a, b) => a.localeCompare(b));
+
+    // Filter posts by search text and category.
+    const filteredPosts = posts.filter(post => {
+        const searchText = search.toLowerCase();
+
+        const contentText = Array.isArray(post.content)
+            ? post.content.map(block => block.text).join(" ")
+            : String(post.content || "");
+
+        const matchesSearch =
+            !searchText ||
+            [
+                post.title,
+                post.author,
+                post.category,
+                contentText
+            ].some(value =>
+                String(value || "")
+                    .toLowerCase()
+                    .includes(searchText)
+            );
+
+        const matchesCategory =
+            !category || post.category === category;
+
+        return matchesSearch && matchesCategory;
     });
 
+    // Calculate pagination using the filtered results.
+    const totalPosts = filteredPosts.length;
+    const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+    // Keep page numbers within the valid range.
+    const page = totalPages === 0
+        ? 1
+        : Math.min(currentPage, totalPages);
+
+    const startIndex = (page - 1) * postsPerPage;
+    const paginatedPosts = filteredPosts.slice(
+        startIndex,
+        startIndex + postsPerPage
+    );
+
+    // Render the homepage.
+    res.render("index", {
+        posts: paginatedPosts,
+        categories,
+        search,
+        selectedCategory: category,
+        currentPage: page,
+        totalPages,
+        totalPosts
+    });
 });
+
 
 
 // ========================================
@@ -858,4 +930,22 @@ app.listen(PORT, () => {
         `Server running at http://localhost:${PORT}`
     );
 
+});
+
+// ========================================
+// EDIT POST
+// SHOW FORM
+// ========================================
+
+
+app.get("/posts/:id", (req, res) => {
+    const postId = Number(req.params.id);
+
+    const post = posts.find(post => post.id === postId);
+
+    if (!post) {
+        return res.status(404).render("404");
+    }
+
+    res.render("post", { post });
 });

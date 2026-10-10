@@ -1,285 +1,222 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Blog</title>
-
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog App</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
-
 <body>
-
-
-    <!-- =========================
-         HEADER
-    ========================== -->
-
     <header class="site-header">
-
-        <div class="container">
-
-            <div class="top-bar">
-
-                <div class="brand">
-
-                    <h1 class="site-title">
-                        Blog
-                    </h1>
-
-
-                    <p class="site-definition">
-                        A blog is a regularly updated website or web page
-                        where an individual or group shares ideas, stories,
-                        experiences, knowledge, or information.
-                    </p>
-
-                </div>
-
-
-                <div class="header-actions">
-
-                    <button
-                        id="theme-toggle"
-                        class="theme-toggle"
-                        type="button"
-                        aria-label="Toggle theme"
-                    >
-                        ☾
-                    </button>
-
-
-                    <a
-                        href="/posts/new"
-                        class="btn btn-primary"
-                    >
-                        + New Post
-                    </a>
-
-                </div>
-
+        <div class="header-content">
+            <div class="brand">
+                <a href="/" class="brand-title">Blog</a>
+                <p class="brand-description">
+                    A blog is a space to share ideas, knowledge, stories, and experiences.
+                </p>
             </div>
 
-        </div>
+            <nav class="header-nav">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/posts/new" class="nav-link">Create Post</a>
 
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="theme-toggle"
+                    aria-label="Switch theme"
+                    title="Switch theme"
+                >
+                    <span id="theme-icon" aria-hidden="true">☾</span>
+                    <span id="theme-label">Dark mode</span>
+                </button>
+            </nav>
+        </div>
     </header>
 
-
-    <!-- =========================
-         POSTS
-    ========================== -->
-
     <main class="container">
-
-        <section class="posts-section">
-
-
-            <!-- Section heading -->
-
-            <div class="section-heading">
-
-                <h2>
-                    Latest Posts
-                </h2>
-
-                <p>
-                    Thoughts, experiences and things worth sharing.
-                </p>
-
-            </div>
-
-
-            <!-- =========================
-                 EMPTY STATE
-            ========================== -->
-
-            <% if (posts.length === 0) { %>
-
-                <div class="empty-state">
-
-                    <h3>
-                        No posts yet
-                    </h3>
-
-
-                    <p>
-                        Create your first blog post to get started.
-                    </p>
-
-
-                    <a
-                        href="/posts/new"
-                        class="btn btn-primary"
-                    >
-                        Create Post
-                    </a>
-
-                </div>
-
-
-            <% } else { %>
-
-
-                <!-- =========================
-                     POST LOOP
-                ========================== -->
-
-                <% posts.forEach((post, index) => { %>
-
-
-                    <article class="post-card">
-
-
-                        <!-- Post number -->
-
-                        <div class="post-number">
-
-                            POST
-                            <%= String(index + 1).padStart(2, "0") %>
-
-                        </div>
-
-
-                        <!-- Post title -->
-
-                        <h3 class="post-title">
-
-                            <%= post.title %>
-
-                        </h3>
-
-
-                        <!-- Post metadata -->
-
-                        <div class="post-meta">
-
-                            <span class="category">
-
-                                <%= post.category %>
-
-                            </span>
-
-
-                            <span class="meta-separator">
-                                •
-                            </span>
-
-
-                            <span>
-
-                                By
-                                <strong>
-                                    <%= post.author %>
-                                </strong>
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- =========================
-                             POST CONTENT
-                        ========================== -->
-
-                        <div class="post-content">
-
-
-                            <% post.content.forEach(block => { %>
-
-
-                                <% if (block.type === "paragraph") { %>
-
-                                    <p>
-                                        <%= block.text %>
-                                    </p>
-
-                                <% } %>
-
-
-                                <% if (block.type === "heading") { %>
-
-                                    <h4>
-                                        <%= block.text %>
-                                    </h4>
-
-                                <% } %>
-
-
-                            <% }) %>
-
-
-                        </div>
-
-
-                        <!-- =========================
-                             POST ACTIONS
-                        ========================== -->
-
-                        <div class="post-actions">
-
-
-                            <!-- Edit -->
-
-                            <a
-                                href="/posts/<%= post.id %>/edit"
-                                class="btn btn-edit"
-                            >
-                                Edit
-                            </a>
-
-
-                            <!-- Delete -->
-
-                            <form
-                                action="/posts/<%= post.id %>/delete"
-                                method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this post?');"
-                            >
-
-                                <button
-                                    type="submit"
-                                    class="btn btn-delete"
-                                >
-                                    Delete
-                                </button>
-
-                            </form>
-
-
-                        </div>
-
-
-                    </article>
-
-
-                <% }) %>
-
-
-            <% } %>
-
-
+        <section class="page-heading">
+            <h2>Explore Articles</h2>
+            <p>Discover ideas, stories, and insights.</p>
         </section>
 
+        <section class="search-section">
+            <form action="/" method="GET" class="search-form">
+                <div class="search-field">
+                    <label for="search">Search articles</label>
+                    <input
+                        type="search"
+                        id="search"
+                        name="search"
+                        placeholder="Search title, author, category, or content..."
+                        value="<%= search %>"
+                    >
+                </div>
+
+                <div class="category-field">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="">All categories</option>
+
+                        <% categories.forEach(category => { %>
+                            <option
+                                value="<%= category %>"
+                                <%= selectedCategory === category ? "selected" : "" %>
+                            >
+                                <%= category %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="search-actions">
+                    <button type="submit" class="search-button">
+                        Search
+                    </button>
+
+                    <a href="/" class="clear-filters">
+                        Clear Filters
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <section class="posts-section">
+            <div class="posts-heading">
+                <h2>Articles</h2>
+                <p>
+                    <strong><%= totalPosts %></strong>
+                    <%= totalPosts === 1 ? "article" : "articles" %> found
+                </p>
+            </div>
+
+            <% if (totalPosts === 0) { %>
+                <div class="empty-state">
+                    <h3>No articles found</h3>
+                    <p>
+                        Try a different search term or choose another category.
+                    </p>
+                    <a href="/" class="clear-filters">
+                        View all articles
+                    </a>
+                </div>
+            <% } else { %>
+                <div class="posts-grid">
+                    <% posts.forEach(post => { %>
+                        <article class="post-card">
+                            <div class="post-card-content">
+                                <% if (post.category) { %>
+                                    <span class="post-category">
+                                        <%= post.category %>
+                                    </span>
+                                <% } %>
+
+                                <h3><%= post.title %></h3>
+
+                                <p class="post-author">
+                                    By <%= post.author %>
+                                </p>
+
+                                <div class="post-content">
+                                    <%
+                                        const fullText = Array.isArray(post.content)
+                                            ? post.content.map(block => block.text).join(" ")
+                                            : String(post.content || "");
+
+                                        const preview = fullText.length > 180
+                                            ? fullText.substring(0, 180).trimEnd() + "..."
+                                            : fullText;
+                                    %>
+
+                                    <p><%= preview %></p>
+
+                                    <a
+                                        href="/posts/<%= post.id %>"
+                                        class="read-article-link"
+                                    >
+                                        Read Article →
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="post-actions">
+                                <a
+                                    href="/posts/<%= post.id %>/edit"
+                                    class="edit-button"
+                                >
+                                    Edit
+                                </a>
+
+                                <form
+                                    action="/posts/<%= post.id %>/delete"
+                                    method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this post?');"
+                                >
+                                    <button type="submit" class="delete-button">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+
+        <% if (totalPosts > 0 && totalPages > 1) { %>
+            <nav class="pagination" aria-label="Article pages">
+
+                <% if (currentPage > 1) { %>
+                    <a
+                        class="pagination-link"
+                        href="/?<%= new URLSearchParams({
+                            search,
+                            category: selectedCategory,
+                            page: String(currentPage - 1)
+                        }).toString() %>"
+                    >
+                        Previous
+                    </a>
+                <% } %>
+
+                <% for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) { %>
+                    <a
+                        class="pagination-link <%= pageNumber === currentPage ? 'active' : '' %>"
+                        href="/?<%= new URLSearchParams({
+                            search,
+                            category: selectedCategory,
+                            page: String(pageNumber)
+                        }).toString() %>"
+                        <%= pageNumber === currentPage ? 'aria-current="page"' : '' %>
+                    >
+                        <%= pageNumber %>
+                    </a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                    <a
+                        class="pagination-link"
+                        href="/?<%= new URLSearchParams({
+                            search,
+                            category: selectedCategory,
+                            page: String(currentPage + 1)
+                        }).toString() %>"
+                    >
+                        Next
+                    </a>
+                <% } %>
+
+            </nav>
+        <% } %>
     </main>
 
-
-    <!-- Theme toggle -->
+    <footer class="site-footer">
+        <p>
+            © <%= new Date().getFullYear() %> My Blog. All rights reserved.
+        </p>
+    </footer>
 
     <script src="/js/theme.js"></script>
-
-
 </body>
-
 </html>

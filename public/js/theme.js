@@ -1,31 +1,44 @@
 const themeToggle = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+const themeLabel = document.getElementById("theme-label");
 
-const savedTheme = localStorage.getItem("theme");
+function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.body.setAttribute("data-theme", theme);
 
-if (savedTheme === "dark") {
-    document.body.classList.add("dark-mode");
-    themeToggle.textContent = "☀";
-}
+    const isDark = theme === "dark";
 
-themeToggle.addEventListener("click", () => {
-
-    document.body.classList.toggle("dark-mode");
-
-    const isDarkMode =
-        document.body.classList.contains("dark-mode");
-
-    if (isDarkMode) {
-
-        localStorage.setItem("theme", "dark");
-
-        themeToggle.textContent = "☀";
-
-    } else {
-
-        localStorage.setItem("theme", "light");
-
-        themeToggle.textContent = "☾";
-
+    if (themeIcon) {
+        themeIcon.textContent = isDark ? "☀" : "☾";
     }
 
-});
+    if (themeLabel) {
+        themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+    }
+
+    if (themeToggle) {
+        themeToggle.setAttribute(
+            "aria-label",
+            isDark ? "Switch to light mode" : "Switch to dark mode"
+        );
+        themeToggle.setAttribute(
+            "title",
+            isDark ? "Switch to light mode" : "Switch to dark mode"
+        );
+    }
+}
+
+const savedTheme = localStorage.getItem("theme");
+applyTheme(savedTheme === "dark" ? "dark" : "light");
+
+if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+        const currentTheme =
+            document.documentElement.getAttribute("data-theme") || "light";
+
+        const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+        localStorage.setItem("theme", nextTheme);
+        applyTheme(nextTheme);
+    });
+}
