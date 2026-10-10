@@ -497,6 +497,14 @@ let posts = [
 ];
 
 
+// Assign createdAt timestamps to seed posts (spaced ~1 week apart).
+const seedDates = [
+    "2026-08-01", "2026-08-08", "2026-08-15", "2026-08-22", "2026-08-29",
+    "2026-09-05", "2026-09-12", "2026-09-19", "2026-09-26", "2026-10-03"
+];
+posts.forEach((post, i) => { post.createdAt = new Date(seedDates[i]); });
+
+
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
@@ -599,15 +607,17 @@ app.use(express.static("public"));
 
 
 
- // =========================
- // HOME PAGE - SEARCH & FILTER
- // =========================
+// =========================
+// HOME PAGE - SEARCH & FILTER
+// =========================
 
 
 app.get("/", (req, res) => {
-    // Read search, category, and page number from the URL.
+    // Read search, category, sort, flash, and page number from the URL.
     const search = (req.query.search || "").trim();
     const category = (req.query.category || "").trim();
+    const sort = req.query.sort || "newest";
+    const flash = req.query.flash || null;
 
     const requestedPage = Number.parseInt(req.query.page, 10);
     const currentPage =
@@ -654,6 +664,15 @@ app.get("/", (req, res) => {
         return matchesSearch && matchesCategory;
     });
 
+    // Sort the filtered results.
+    filteredPosts.sort((a, b) => {
+        if (sort === "oldest") return new Date(a.createdAt) - new Date(b.createdAt);
+        if (sort === "az") return a.title.localeCompare(b.title);
+        if (sort === "za") return b.title.localeCompare(a.title);
+        // newest first (default)
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
     // Calculate pagination using the filtered results.
     const totalPosts = filteredPosts.length;
     const totalPages = Math.ceil(totalPosts / postsPerPage);
@@ -675,6 +694,8 @@ app.get("/", (req, res) => {
         categories,
         search,
         selectedCategory: category,
+        sort,
+        flash,
         currentPage: page,
         totalPages,
         totalPosts
@@ -717,7 +738,10 @@ app.post("/posts", (req, res) => {
 
         return res
             .status(400)
-            .send("All fields are required.");
+            .render("new", {
+                error: "All fields are required. Please fill in every field before publishing.",
+                formData: { title, category, author, content }
+            });
 
     }
 
@@ -740,7 +764,9 @@ app.post("/posts", (req, res) => {
 
         author: author,
 
-        content: formattedContent
+        content: formattedContent,
+
+        createdAt: new Date()
 
     };
 
@@ -750,9 +776,9 @@ app.post("/posts", (req, res) => {
     posts.push(newPost);
 
 
-    // Go back to homepage.
+    // Go back to homepage with success flash.
 
-    res.redirect("/");
+    res.redirect("/?flash=published");
 
 });
 
@@ -841,9 +867,15 @@ app.post("/posts/:id/edit", (req, res) => {
 
     if (!title || !category || !author || !content) {
 
+        const editableContent = contentToText(post.content);
+
         return res
             .status(400)
-            .send("All fields are required.");
+            .render("edit", {
+                post,
+                editableContent,
+                error: "All fields are required. Please fill in every field before saving."
+            });
 
     }
 
@@ -865,9 +897,9 @@ app.post("/posts/:id/edit", (req, res) => {
     post.content = formattedContent;
 
 
-    // Return to homepage.
+    // Return to homepage with success flash.
 
-    res.redirect("/");
+    res.redirect("/?flash=updated");
 
 });
 
@@ -902,9 +934,29 @@ app.post("/posts/:id/delete", (req, res) => {
     posts.splice(postIndex, 1);
 
 
-    // Return to homepage.
+    // Return to homepage with success flash.
 
-    res.redirect("/");
+    res.redirect("/?flash=deleted");
+
+});
+
+
+// ========================================
+// VIEW POST
+// ========================================
+
+
+app.get("/posts/:id", (req, res) => {
+
+    const postId = Number(req.params.id);
+
+    const post = posts.find(post => post.id === postId);
+
+    if (!post) {
+        return res.status(404).render("404");
+    }
+
+    res.render("post", { post });
 
 });
 
@@ -930,22 +982,4 @@ app.listen(PORT, () => {
         `Server running at http://localhost:${PORT}`
     );
 
-});
-
-// ========================================
-// EDIT POST
-// SHOW FORM
-// ========================================
-
-
-app.get("/posts/:id", (req, res) => {
-    const postId = Number(req.params.id);
-
-    const post = posts.find(post => post.id === postId);
-
-    if (!post) {
-        return res.status(404).render("404");
-    }
-
-    res.render("post", { post });
 });

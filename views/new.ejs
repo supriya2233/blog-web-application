@@ -79,6 +79,13 @@
             </h2>
 
 
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="form-error-banner" role="alert">
+                    <span class="form-error-icon" aria-hidden="true">⚠</span>
+                    <%= error %>
+                </div>
+            <% } %>
+
             <form
                 action="/posts"
                 method="POST"
@@ -100,6 +107,7 @@
                         id="title"
                         name="title"
                         placeholder="Enter your post title"
+                        value="<%= (typeof formData !== 'undefined' && formData.title) ? formData.title : '' %>"
                         required
                     >
 
@@ -120,6 +128,7 @@
                         id="category"
                         name="category"
                         placeholder="e.g. Technology, Lifestyle, Finance"
+                        value="<%= (typeof formData !== 'undefined' && formData.category) ? formData.category : '' %>"
                         required
                     >
 
@@ -140,6 +149,7 @@
                         id="author"
                         name="author"
                         placeholder="Enter your name"
+                        value="<%= (typeof formData !== 'undefined' && formData.author) ? formData.author : '' %>"
                         required
                     >
 
@@ -161,7 +171,7 @@
                         rows="12"
                         placeholder="Write your blog post here..."
                         required
-                    ></textarea>
+                    ><%= (typeof formData !== 'undefined' && formData.content) ? formData.content : '' %></textarea>
 
 
                     <p class="form-help">

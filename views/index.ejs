@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog App</title>
+    <title>Blog — Ideas, Stories & Insights</title>
+    <meta name="description" content="Explore articles on productivity, lifestyle, technology, travel, finance and more.">
+    <meta property="og:title" content="Blog — Ideas, Stories & Insights">
+    <meta property="og:description" content="Explore articles on productivity, lifestyle, technology, travel, finance and more.">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -34,6 +38,21 @@
             </nav>
         </div>
     </header>
+
+    <% const _flash = (typeof flash !== 'undefined') ? flash : null; %>
+    <% if (_flash) { %>
+        <div class="flash-toast" id="flash-toast" role="status" aria-live="polite">
+            <span class="flash-icon" aria-hidden="true">
+                <% if (_flash === 'deleted') { %>🗑<% } else { %>✓<% } %>
+            </span>
+            <span class="flash-text">
+                <% if (_flash === 'published') { %>Post published successfully!<% } %>
+                <% if (_flash === 'updated') { %>Post updated successfully!<% } %>
+                <% if (_flash === 'deleted') { %>Post deleted.<% } %>
+            </span>
+            <button class="flash-close" id="flash-close" aria-label="Dismiss">&times;</button>
+        </div>
+    <% } %>
 
     <main class="container">
         <section class="page-heading">
@@ -67,6 +86,17 @@
                                 <%= category %>
                             </option>
                         <% }) %>
+                    </select>
+                </div>
+
+                <div class="sort-field">
+                    <% const _sort = (typeof sort !== 'undefined') ? sort : 'newest'; %>
+                    <label for="sort">Sort by</label>
+                    <select id="sort" name="sort">
+                        <option value="newest" <%= _sort === 'newest' ? 'selected' : '' %>>Newest first</option>
+                        <option value="oldest" <%= _sort === 'oldest' ? 'selected' : '' %>>Oldest first</option>
+                        <option value="az"     <%= _sort === 'az'     ? 'selected' : '' %>>Title A → Z</option>
+                        <option value="za"     <%= _sort === 'za'     ? 'selected' : '' %>>Title Z → A</option>
                     </select>
                 </div>
 
@@ -173,6 +203,7 @@
                         href="/?<%= new URLSearchParams({
                             search,
                             category: selectedCategory,
+                            sort,
                             page: String(currentPage - 1)
                         }).toString() %>"
                     >
@@ -186,6 +217,7 @@
                         href="/?<%= new URLSearchParams({
                             search,
                             category: selectedCategory,
+                            sort,
                             page: String(pageNumber)
                         }).toString() %>"
                         <%= pageNumber === currentPage ? 'aria-current="page"' : '' %>
@@ -200,12 +232,15 @@
                         href="/?<%= new URLSearchParams({
                             search,
                             category: selectedCategory,
+                            sort,
                             page: String(currentPage + 1)
                         }).toString() %>"
                     >
                         Next
                     </a>
                 <% } %>
+
+                <span class="pagination-info">Page <%= currentPage %> of <%= totalPages %></span>
 
             </nav>
         <% } %>
@@ -218,5 +253,24 @@
     </footer>
 
     <script src="/js/theme.js"></script>
+    <script>
+        // Flash toast auto-dismiss and URL cleanup
+        const toast = document.getElementById('flash-toast');
+        const closeBtn = document.getElementById('flash-close');
+        if (toast) {
+            // Remove flash param from URL without reloading
+            const url = new URL(window.location.href);
+            url.searchParams.delete('flash');
+            window.history.replaceState({}, '', url.toString());
+            // Auto-dismiss after 4s
+            const timer = setTimeout(() => toast.classList.add('flash-toast--hide'), 4000);
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    clearTimeout(timer);
+                    toast.classList.add('flash-toast--hide');
+                });
+            }
+        }
+    </script>
 </body>
 </html>

@@ -79,6 +79,14 @@
             </h2>
 
 
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="form-error-banner" role="alert">
+                    <span class="form-error-icon" aria-hidden="true">⚠</span>
+                    <%= error %>
+                </div>
+            <% } %>
+
+
             <form
                 action="/posts/<%= post.id %>/edit"
                 method="POST"

@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= post.title %> | Blog</title>
+    <%
+        const metaExcerpt = (Array.isArray(post.content)
+            ? post.content.map(b => b.text).join(' ')
+            : String(post.content || '')
+        ).slice(0, 160).trim();
+    %>
+    <meta name="description" content="<%= metaExcerpt %>">
+    <meta property="og:title" content="<%= post.title %> | Blog">
+    <meta property="og:description" content="<%= metaExcerpt %>">
+    <meta property="og:type" content="article">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -46,7 +56,17 @@
 
                 <h1><%= post.title %></h1>
 
-                <p class="post-author">By <%= post.author %></p>
+                <div class="article-meta">
+                    <span class="post-author">By <%= post.author %></span>
+                    <%
+                        const totalWords = (Array.isArray(post.content)
+                            ? post.content.reduce((n, b) => n + (b.text || '').trim().split(/\s+/).filter(Boolean).length, 0)
+                            : String(post.content || '').trim().split(/\s+/).filter(Boolean).length
+                        );
+                        const readTime = Math.max(1, Math.ceil(totalWords / 200));
+                    %>
+                    <span class="article-word-count"><%= totalWords %> words &middot; <%= readTime %> min read</span>
+                </div>
             </header>
 
             <div class="article-body">
@@ -75,6 +95,15 @@
                     Edit Article
                 </a>
 
+                <button
+                    class="copy-link-btn"
+                    id="copy-link-btn"
+                    type="button"
+                    aria-label="Copy link to this article"
+                >
+                    📋 Copy Link
+                </button>
+
                 <form
                     action="/posts/<%= post.id %>/delete"
                     method="POST"
@@ -95,5 +124,20 @@
     </footer>
 
     <script src="/js/theme.js"></script>
+    <script>
+        const copyBtn = document.getElementById('copy-link-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    copyBtn.textContent = '✓ Copied!';
+                    copyBtn.classList.add('copy-link-btn--success');
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copy Link';
+                        copyBtn.classList.remove('copy-link-btn--success');
+                    }, 2000);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
