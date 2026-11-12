@@ -1,81 +1,69 @@
 # Blog Web Application
 
-A responsive full-stack blog web application allows users to create, view, edit, and delete blog posts. Posts are stored temporarily in memory, so they reset when the server is restarted.
+A responsive full-stack blog application built with **Node.js**, **Express.js**, and **EJS**. Posts are stored in-memory and pre-populated with sample articles.
 
-## Overview
+---
 
-This project is a full-stack web application developed to demonstrate the fundamentals of web development using **Node.js, Express.js, and EJS**.
-The application provides a clean and responsive blogging interface where users can:
-- Create new blog posts
-- View all blog posts
-- Edit existing posts
-- Delete posts
-- Add categories to posts
-- Format content using paragraphs and section headings
-- Switch between light and dark mode
-- Use the application across desktop, tablet, and mobile devices
+## Features
 
-## Application Architecture
-The application follows a simple client-server architecture.
+- **Full CRUD**: Create, read, edit, and delete blog posts.
+- **Search, Filter & Sort**: Keyword search, category filtering, and sorting (Newest, Oldest, A–Z, Z–A).
+- **Pagination**: Paginated article listings (4 per page) with page navigation.
+- **Article Detail View**: Dedicated reading page with word count, reading time, and one-click share/copy link.
+- **Theme Switcher**: Dark and light mode toggle with preferences saved in `localStorage`.
+- **User Feedback**: Form validation error alerts and auto-dismissing flash toast notifications.
+- **Content Formatting**: Automatic structuring for paragraphs and section headings (using `## `).
+- **Responsive Design**: Optimized for mobile, tablet, and desktop viewports, plus custom 404 page support.
 
-                    User
-                      |
-                      v
-              EJS Web Interface
-                      |
-                      v
-               Express.js Server
-                      |
-        +-------------+-------------+
-        |             |             |
-        v             v             v
-      Create         Read         Update/Delete
-        |             |             |
-        +-------------+-------------+
-                      |
-                      v
-             In-Memory Post Array
+---
 
-## Installation
+## Quick Start
 
 ### Prerequisites
-Make sure the following are installed on your system:
-- Node.js
-- npm
-- Git
+- [Node.js](https://nodejs.org/) (v18.11+ recommended)
+- Git & npm
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/supriya2233/blog-web-application.git
-```
+### Installation & Running
 
-### 2. Navigate to the Project
-```bash
-cd blog-web-application
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/supriya2233/blog-web-application.git
+   cd blog-app
+   ```
 
-### 3. Install Dependencies
-```bash
-npm install
-```
-This installs the dependencies listed in `package.json`.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-### 4. Start the Application
-```bash
-npm start
-```
-The application will run at:
+3. **Start the server:**
+   - **Standard start:**
+     ```bash
+     npm start
+     ```
+   - **Development mode (auto-reload on save):**
+     ```bash
+     npm run dev
+     ```
+
+4. Open **http://localhost:3000** in your browser.
+
+---
+
+## Project Structure
+
 ```text
-http://localhost:3000
+blog-app/
+├── public/          # Static assets (CSS stylesheets & theme toggle script)
+├── views/           # EJS templates (index, post, new, edit, 404)
+├── app.js           # Express server, routes, and in-memory post data
+└── package.json     # Project dependencies and scripts
 ```
-Open the address in your browser.
 
-## Development Mode
-For development with automatic server restarting, run:
-```bash
-npm run dev
-```
-This uses Nodemon to automatically restart the Node.js server whenever changes are detected.
+---
 
+## Writing Articles
 
-
+When entering content in the post body:
+- **Paragraphs**: Separate paragraphs with a blank line.
+- **Headings**: Prefix a line with `## ` to create a section heading (e.g., `## Introduction`).
