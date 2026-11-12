@@ -1,6 +1,6 @@
 # Blog Web Application
 
-A responsive full-stack blog application built with **Node.js**, **Express.js**, and **EJS**. Posts are stored in-memory and pre-populated with sample articles.
+A responsive full-stack blog application built with **Node.js**, **Express.js**, and **EJS**. Posts are stored in-memory and pre-populated with sample posts.
 
 ---
 
@@ -8,8 +8,8 @@ A responsive full-stack blog application built with **Node.js**, **Express.js**,
 
 - **Full CRUD**: Create, read, edit, and delete blog posts.
 - **Search, Filter & Sort**: Keyword search, category filtering, and sorting (Newest, Oldest, A–Z, Z–A).
-- **Pagination**: Paginated article listings (4 per page) with page navigation.
-- **Article Detail View**: Dedicated reading page with word count, reading time, and one-click share/copy link.
+- **Pagination**: Paginated post listings (4 per page) with page navigation.
+- **Post Detail View**: Dedicated reading page with word count, reading time, and one-click share/copy link.
 - **Theme Switcher**: Dark and light mode toggle with preferences saved in `localStorage`.
 - **User Feedback**: Form validation error alerts and auto-dismissing flash toast notifications.
 - **Content Formatting**: Automatic structuring for paragraphs and section headings (using `## `).
@@ -62,7 +62,7 @@ blog-app/
 
 ---
 
-## Writing Articles
+## Writing Posts
 
 When entering content in the post body:
 - **Paragraphs**: Separate paragraphs with a blank line.

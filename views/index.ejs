@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Ideas, Stories & Insights</title>
-    <meta name="description" content="Explore articles on productivity, lifestyle, technology, travel, finance and more.">
-    <meta property="og:title" content="Blog — Ideas, Stories & Insights">
-    <meta property="og:description" content="Explore articles on productivity, lifestyle, technology, travel, finance and more.">
+    <title>Blog - Ideas, Stories & Insights</title>
+    <meta name="description" content="Explore posts on productivity, lifestyle, technology, travel, finance and more.">
+    <meta property="og:title" content="Blog - Ideas, Stories & Insights">
+    <meta property="og:description" content="Explore posts on productivity, lifestyle, technology, travel, finance and more.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -17,7 +17,9 @@
             <div class="brand">
                 <a href="/" class="brand-title">Blog</a>
                 <p class="brand-description">
-                    A blog is a space to share ideas, knowledge, stories, and experiences.
+                    A blog is a regularly updated website or web page
+                    where an individual or group shares ideas, stories,
+                    experiences, knowledge, or information.
                 </p>
             </div>
 
@@ -48,7 +50,7 @@
             <span class="flash-text">
                 <% if (_flash === 'published') { %>Post published successfully!<% } %>
                 <% if (_flash === 'updated') { %>Post updated successfully!<% } %>
-                <% if (_flash === 'deleted') { %>Post deleted.<% } %>
+                <% if (_flash === 'deleted') { %>Post deleted successfully!<% } %>
             </span>
             <button class="flash-close" id="flash-close" aria-label="Dismiss">&times;</button>
         </div>
@@ -56,14 +58,14 @@
 
     <main class="container">
         <section class="page-heading">
-            <h2>Explore Articles</h2>
+            <h2>Explore Posts</h2>
             <p>Discover ideas, stories, and insights.</p>
         </section>
 
         <section class="search-section">
             <form action="/" method="GET" class="search-form">
                 <div class="search-field">
-                    <label for="search">Search articles</label>
+                    <label for="search">Search posts</label>
                     <input
                         type="search"
                         id="search"
@@ -114,21 +116,21 @@
 
         <section class="posts-section">
             <div class="posts-heading">
-                <h2>Articles</h2>
+                <h2>Posts</h2>
                 <p>
                     <strong><%= totalPosts %></strong>
-                    <%= totalPosts === 1 ? "article" : "articles" %> found
+                    <%= totalPosts === 1 ? "post" : "posts" %> found
                 </p>
             </div>
 
             <% if (totalPosts === 0) { %>
                 <div class="empty-state">
-                    <h3>No articles found</h3>
+                    <h3>No posts found</h3>
                     <p>
                         Try a different search term or choose another category.
                     </p>
                     <a href="/" class="clear-filters">
-                        View all articles
+                        View all posts
                     </a>
                 </div>
             <% } else { %>
@@ -165,7 +167,7 @@
                                         href="/posts/<%= post.id %>"
                                         class="read-article-link"
                                     >
-                                        Read Article →
+                                        Read Post →
                                     </a>
                                 </div>
                             </div>
@@ -195,7 +197,7 @@
         </section>
 
         <% if (totalPosts > 0 && totalPages > 1) { %>
-            <nav class="pagination" aria-label="Article pages">
+            <nav class="pagination" aria-label="Post pages">
 
                 <% if (currentPage > 1) { %>
                     <a
@@ -248,7 +250,7 @@
 
     <footer class="site-footer">
         <p>
-            © <%= new Date().getFullYear() %> My Blog. All rights reserved.
+            © <%= new Date().getFullYear() %> Blog. All rights reserved.
         </p>
     </footer>
 

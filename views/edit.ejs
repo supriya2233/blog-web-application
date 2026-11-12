@@ -54,7 +54,7 @@
                         href="/"
                         class="btn btn-edit"
                     >
-                        ← Back
+                        ← Back to Posts
                     </a>
 
                 </div>
@@ -107,6 +107,7 @@
                         type="text"
                         id="title"
                         name="title"
+                        placeholder="Enter your post title"
                         value="<%= post.title %>"
                         required
                     >
@@ -127,6 +128,7 @@
                         type="text"
                         id="category"
                         name="category"
+                        placeholder="e.g. Technology, Lifestyle, Finance"
                         value="<%= post.category %>"
                         required
                     >
@@ -147,6 +149,7 @@
                         type="text"
                         id="author"
                         name="author"
+                        placeholder="Enter your name"
                         value="<%= post.author %>"
                         required
                     >
@@ -167,6 +170,7 @@
                         id="content"
                         name="content"
                         rows="12"
+                        placeholder="Write your blog post here..."
                         required
                     ><%= editableContent %></textarea>
 
